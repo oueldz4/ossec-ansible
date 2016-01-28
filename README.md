@@ -1,1 +1,1 @@
-Ossec HIDS installation based on DevOps for provisionning. 
+Ossec HIDS installation based on DevOps (Ansible) for provisionning. 
