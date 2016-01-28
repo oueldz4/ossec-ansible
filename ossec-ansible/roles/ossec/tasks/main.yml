@@ -1,0 +1,51 @@
+---
+- name: Download Ossec Agent on Windows
+  win_get_url: 
+    url: 'https://github.com/0ueldz4/ossec/blob/master/src/agent/ossec-agent-win32-2.8.3.exe?raw=true' 
+    dest: '%APPDATA\ossec-agent-win32-2.8.3.exe'
+
+- name: Check Ossec Agent presence on Windows
+  win_stat: '%APPDATA\ossec-agent-win32-2.8.3.exe'
+  register: win_agent
+
+- name: Install Ossec Agent on Windows
+  raw: '%APPDATA%\ossec-agent-win32-2.8.3.exe /S'
+  register: 'agent_install'
+  when: win_agent.stat.exists
+
+- name: Add Ossec repo (Debian)
+  apt_repository: repo="deb http://ossec.wazuh.com/repos/apt/debian wheezy main" state=present
+  when: ansible_distribution == 'Debian'
+
+- name: Install Ossec (Debian)
+  apt: name=ossec-hids-agent update_cache=true force=yes
+  when: ansible_distribution == 'Debian'
+
+- name: Add Ossec repo (Ubuntu)
+  apt_repository: repo='deb http://ossec.wazuh.com/repos/apt/ubuntu precise main' state=present
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install Ossec (Ubuntu)
+  apt: name=ossec-hids-agent update_cache=true force=yes
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Download the agent for Centos/RH
+  get_url: url=https://www.atomicorp.com/installers/atomic dest=/tmp/atomic.sh
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+- name: install wget
+  yum: name=wget state=present
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+- name: Check file existing
+  stat: path=/tmp/atomic.sh
+  register: atomic_script
+
+- name: Execute atomic.sh if it exists
+  shell: NON_INT=1 sh /tmp/atomic.sh
+  ignore_errors: yes
+  when: atomic_script.stat.exists
+
+- name: Install Ossec
+  yum: name=ossec-hids-client state=latest
+
