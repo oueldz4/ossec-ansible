@@ -2,16 +2,17 @@
 - name: Download Ossec Agent on Windows
   win_get_url: 
     url: 'https://github.com/0ueldz4/ossec/blob/master/src/agent/ossec-agent-win32-2.8.3.exe?raw=true' 
-    dest: '%APPDATA\ossec-agent-win32-2.8.3.exe'
+    dest: '%APPDATA%\ossec-agent-win32-2.8.3.exe'
+  when: ansible_os_family == "Windows"
 
 - name: Check Ossec Agent presence on Windows
-  win_stat: '%APPDATA\ossec-agent-win32-2.8.3.exe'
+  win_stat: path=%APPDATA%\ossec-agent-win32-2.8.3.exe
   register: win_agent
+  when: ansible_os_family == "Windows"
 
 - name: Install Ossec Agent on Windows
   raw: '%APPDATA%\ossec-agent-win32-2.8.3.exe /S'
-  register: 'agent_install'
-  when: win_agent.stat.exists
+  when: ansible_os_family == "Windows" and win_agent.stat.exists == true
 
 - name: Add Ossec repo (Debian)
   apt_repository: repo="deb http://ossec.wazuh.com/repos/apt/debian wheezy main" state=present
