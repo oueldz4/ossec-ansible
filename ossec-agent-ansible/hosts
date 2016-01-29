@@ -1,9 +1,9 @@
 [linux_agents]
-{{ ossec_vars.agent }}
+192.168.33.50
 
 [linux_agents:vars]
-ansible_ssh_user={{ ossec_vars.ssh_creds.ssh_user }}
-ansible_ssh_pass={{ ossec_vars.ssh_creds.ssh_pass }}
+ansible_ssh_user=vagrant
+ansible_ssh_pass=vagrant
 
 
 [win_agents]

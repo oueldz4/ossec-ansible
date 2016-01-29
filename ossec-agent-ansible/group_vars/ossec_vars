@@ -1,7 +1,7 @@
 ---
 
 ossec_vars: 
-    agent_ip: xxx.xxx.xxx.xxx
+    agent_ip: 192.168.33.50
 
     ssh_creds:
         ssh_user=vagrant

@@ -13,7 +13,7 @@
 
 - name: Install wget
   yum: name=wget state=present
-  when: ansibleè_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
 
 - name: Download atomic script
   get_url: url=https://www.atomicorp.com/installers/atomic dest=/tmp/atomic.sh
