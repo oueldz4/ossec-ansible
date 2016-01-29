@@ -48,5 +48,8 @@
   when: atomic_script.stat.exists
 
 - name: Install Ossec
-  yum: name=ossec-hids-client state=latest
+  yum: name={{item}} state=latest
+  with_items:
+      - ossec-hids
+      - ossec-hids-client
 

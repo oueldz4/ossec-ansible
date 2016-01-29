@@ -1,0 +1,36 @@
+---
+- name: Add Ossec Server Repo (Debian)
+  apt_repository: repo="deb http://ossec.wazuh.com/repos/apt/debian wheezy main" state=present
+  when: ansible_distribution == 'Debian'
+
+- name: Add Ossec Server Repo (Ubuntu)
+  apt_repository: repo="deb http://ossec.wazuh.com/repos/apt/ubuntu precise main" state=present
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install Ossec Server (Debian/Ubuntu)
+  apt: name=ossec-hids update_cache=true force=yes
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Install wget
+  yum: name=wget state=present
+  when: ansibleè_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+- name: Download atomic script
+  get_url: url=https://www.atomicorp.com/installers/atomic dest=/tmp/atomic.sh
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+- name: Check atomic file existing
+  stat: path=/tmp/atomic.sh
+  register: atomic_script
+
+- name: Execute atomic.sh if it exists
+  shell: NON_INT=1 sh /tmp/atomic.sh
+  ignore_errors: yes
+  when: atomic_script.stat.exists
+
+- name: Install Ossec Server (CentOS/RedHat)
+  yum: name={{item}} state=latest 
+  with_items:
+      - ossec-hids
+      - ossec-hids-server
+

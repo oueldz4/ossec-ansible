@@ -1,0 +1,6 @@
+[linux_server]
+IP_ADDR
+
+[linux_server:vars]
+ansible_ssh_user=vagrant
+ansible_ssh_pass=vagrant

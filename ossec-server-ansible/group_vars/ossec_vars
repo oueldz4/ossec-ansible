@@ -1,0 +1,4 @@
+---
+
+ossec_vars:
+    server_ip: xxx.xxx.xxx.xxx
