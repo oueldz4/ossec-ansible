@@ -2,3 +2,8 @@
 
 ossec_vars:
     server_ip: xxx.xxx.xxx.xxx
+
+    ssh_creds: 
+        ssh_user=vagrant
+        ssh_pass=vagrant
+
