@@ -31,7 +31,7 @@
   when: ansible_distribution == 'Ubuntu'
 
 - name: Download the agent for Centos/RH
-  get_url: url=https://www.atomicorp.com/installers/atomic dest=/tmp/atomic.sh
+  get_url: url=https://raw.githubusercontent.com/0ueldz4/ossec/master/src/atomic dest=/tmp/atomic.sh
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
 
 - name: install wget
