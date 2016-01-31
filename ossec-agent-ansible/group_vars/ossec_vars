@@ -1,8 +1,0 @@
----
-
-ossec_vars: 
-    agent_ip: 192.168.33.50
-
-    ssh_creds:
-        ssh_user=vagrant
-        ssh_pass=vagrant
