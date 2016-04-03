@@ -87,7 +87,7 @@ ansible_winrm_server_cert_validation=ignore
 ansible_winrm_transport=ssl
 ```
 
-**You will have to change the IP address of the OSSEC server in all file which can be found in **provisioning/group_vars**
+You will have to change the IP address of the OSSEC server in ** all** file which can be found in **provisioning/group_vars**
 ```
 ossec_server: @IP_ossec_server
 ```
@@ -115,5 +115,5 @@ To go further...
 - And much more things to customize...
 
 
-Please feel free to ping me on #ossec irc.freenode.net or @oueldz4 on twitter. 
+Please feel free to ping me on #ossec irc.freenode.net or [@oueldz4](https://twitter.com/oueldz4) 
 
