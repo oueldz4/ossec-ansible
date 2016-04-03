@@ -54,6 +54,7 @@ The provisioning should be done from a linux machine.
 
 The hosts (agents and server) to provision should be declared in the **hosts** file.
 > On linux, the chosen ssh user for the provisioning should be in sudoers group (to have rights to update and install packages).
+
 > On Windows, the chosen user for the provisiong should be in admins group (Domain admin for example).
 
 Next, the format of the hosts file: 
@@ -86,7 +87,7 @@ ansible_winrm_server_cert_validation=ignore
 ansible_winrm_transport=ssl
 ```
 
-**You will have to change the IP address of the OSSEC server in ***all*** file which can be found in provisioning/group_vars**
+**You will have to change the IP address of the OSSEC server in all file which can be found in **provisioning/group_vars**
 ```
 ossec_server: @IP_ossec_server
 ```
