@@ -94,9 +94,9 @@ ossec_server: @IP_ossec_server
 
 On Windows Environment, you should ensure that : 
 
-	- The hosts to provision are reachable. 
-	- The OSSEC server is reachable on port 1514 (if there is a FW, open that port).
-	- Winrm is installed on the machines to provision. Elsewhere, you should upgrade PowerShell (version >= 4.0) on the machines and execute the given script **ConfigureRemotingForAnsible.ps1** which can be found in **src** repository. It will install Winrm and open the port 5985 and 5986 to allow Ansible to communicate with the machines. If the script execution returns an error, you will have then to execute the PS command **Set-ExecutionPolicy Unrestricted**.
+- The hosts to provision are reachable. 
+- The OSSEC server is reachable on port 1514 (if there is a FW, open that port).
+- Winrm is installed on the machines to provision. Elsewhere, you should upgrade PowerShell (version >= 4.0) on the machines and execute the given script **ConfigureRemotingForAnsible.ps1** which can be found in **src** repository. It will install Winrm and open the port 5985 and 5986 to allow Ansible to communicate with the machines. If the script execution returns an error, you will have then to execute the PS command **Set-ExecutionPolicy Unrestricted**.
 
 Next, we go to **ossec-ansible/provisioning** and lauch the magical command for the provisioning : 
 
