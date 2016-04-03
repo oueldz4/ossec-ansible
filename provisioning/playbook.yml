@@ -1,0 +1,30 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  roles:
+      - role: generate_keys
+  tags:
+      - local
+
+- hosts: ossec_server
+  become: yes
+  become_method: sudo
+  roles:
+      - role: ossec-server
+  tags: 
+      - server 
+
+- hosts: ossec_linux_agents
+  become: yes
+  become_method: sudo
+  roles:
+      - role: ossec-linux-agent
+  tags:
+      - linux_agent
+
+- hosts: ossec_windows_agents
+  roles:
+      - role: ossec-windows-agent
+  tags: 
+      - windows_agent
+

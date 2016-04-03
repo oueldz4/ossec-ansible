@@ -1,7 +1,0 @@
-[linux_server]
-192.168.33.100
-
-
-[linux_server:vars]
-ansible_ssh_user=vagrant
-ansible_ssh_pass=vagrant

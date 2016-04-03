@@ -1,0 +1,13 @@
+---
+
+- name: restart ossec-server 
+  service: name={{ossec_name}} state=restarted
+
+- name: restart elasticsearch
+  service: name=elasticsearch state=restarted
+
+- name: restart kibana
+  service: name=kibana state=restarted
+
+- name: restart logstash
+  service: name=logstash state=restarted

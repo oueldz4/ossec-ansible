@@ -1,0 +1,22 @@
+<group name="Device">
+    <rule id="100533" level="7">
+        <match>ossec: output: 'lsblk</match>
+        <check_diff />
+        <description>Devices status changed (new device or deleted device)</description>
+    </rule>
+</group>
+
+<group name="tasklist">
+    <rule id="100050" level="7">
+        <match>ossec: output: 'tasklist</match>
+        <check_diff />
+        <description>Process status changed (new or deleted process)</description>
+    </rule>
+</group>
+
+<rule id="140123" level="7">
+    <if_sid>530</if_sid>
+    <match>ossec: output: 'netstat -tan |grep LISTEN</match>
+    <check_diff />
+    <description>Listened ports have changed.</description>
+</rule>

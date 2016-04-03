@@ -1,0 +1,50 @@
+---
+- name: Add Ossec key 
+  shell: apt-key adv --fetch-keys http://ossec.wazuh.com/repos/apt/conf/ossec-key.gpg.key
+  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+
+- name: Add Ossec repo (Debian)
+  apt_repository: repo="deb http://ossec.wazuh.com/repos/apt/debian wheezy main" state=present
+  when: ansible_distribution == 'Debian'
+
+- name: Add Ossec repo (Ubuntu)
+  apt_repository: repo='deb http://ossec.wazuh.com/repos/apt/ubuntu precise main' state=present
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Download atomic script (CentOS/RedHat)
+  get_url: url=https://raw.githubusercontent.com/0ueldz4/ossec/master/src/atomic dest=/tmp/atomic.sh
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+- name: Check file existing
+  stat: path=/tmp/atomic.sh
+  register: atomic_script
+
+- name: Execute atomic.sh if it exists
+  shell: expect -c 'spawn sh /tmp/atomic.sh; expect "yes]"; send "yes\n"; expect "yes]:"; send "yes\n"; interact'
+  when: atomic_script.stat.exists
+
+- set_fact: ossec_name=ossec-hids-agent
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- set_fact: ossec_name=ossec-hids-client
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+- name: Install ossec-agent
+  package: name={{ ossec_name }} update_cache=true  state=present
+
+- name: Deploy the ossec.conf file on the agent host
+  template: src=../templates/ossec.conf.j2 dest=/var/ossec/etc/ossec.conf backup=yes
+
+- name: Copy client.keys file 
+  copy: src=roles/ossec-linux-agent/files/keys/client_{{ inventory_hostname }}.keys dest=/var/ossec/etc/client.keys
+
+- name: Start ossec-agent 
+  shell: /var/ossec/bin/ossec-control start
+
+- name: Add Ossec at startup
+  shell: chkconfig ossec-hids on
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+- name: run at startup (Debian/Ubuntu)
+  shell: update-rc.d ossec defaults
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

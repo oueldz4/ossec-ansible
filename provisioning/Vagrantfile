@@ -1,0 +1,167 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+    # VM pour OSSSEC SERVER
+    config.vm.define "ossecserver" do |ossecserver|
+        ossecserver.vm.box = "nrel/CentOS-6.5-x86_64"
+        ossecserver.vm.network "private_network", ip: "192.168.33.100"
+        ossecserver.vm.provision "shell", inline: <<-SHELL
+            sudo iptables --flush 
+            sudo chkconfig iptables off  
+        SHELL
+    
+        # VMware Fusion.
+        #ossecserver.vm.provider :vmware_fusion do |vmware_fusion|
+        #    vmware_fusion.gui = false
+        #    vmware_fusion.vmx["memsize"] = "1024"
+        #    vmware_fusion.vmx["numvcpus"] = "1"
+        #end
+ 
+        # VirtualBox.
+        ossecserver.vm.provider :virtualbox do |virtualbox|
+            virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        #    virtualbox.customize ["modifyvm", :id, "--memory", 1024]
+            virtualbox.customize ["modifyvm", :id, "--name", "ossecserver"]
+            virtualbox.customize ["modifyvm", :id, "--ioapic", "on"]
+        end
+ 
+        # Parallels.
+        #ossecserver.vm.provider :parallels do |parallels|
+        #    parallels.name = "ossecserver"
+        #    parallels.memory = "1024"
+        #    parallels.cpus = "1"
+        #end
+    end
+
+    # VM pour agent linux CentOS
+    config.vm.define "agent1" do |agent1|
+        agent1.vm.box = "nrel/CentOS-6.5-x86_64"
+        agent1.vm.network "private_network", ip: "192.168.33.50"
+        agent1.vm.provision "shell", inline: <<-SHELL
+            sudo iptables --flush 
+            sudo chkconfig iptables off
+        SHELL
+
+        # VMware Fusion.
+        #agent1.vm.provider :vmware_fusion do |vmware_fusion|
+        #    vmware_fusion.gui = false
+        #    vmware_fusion.vmx["memsize"] = "1024"
+        #    vmware_fusion.vmx["numvcpus"] = "1"
+        #end
+ 
+        # VirtualBox.
+        agent1.vm.provider :virtualbox do |virtualbox|
+            virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        #    virtualbox.customize ["modifyvm", :id, "--memory", 1024]
+            virtualbox.customize ["modifyvm", :id, "--name", "agent1"]
+            virtualbox.customize ["modifyvm", :id, "--ioapic", "on"]
+        end
+ 
+        # Parallels.
+        #agent1.vm.provider :parallels do |parallels|
+        #    parallels.name = "agent1"
+        #    parallels.memory = "1024"
+        #    parallels.cpus = "1"
+        #end
+        
+    end
+
+    # VM pour agent linux Ubuntu
+    config.vm.define "agent2" do |agent2|
+        agent2.vm.box = "hashicorp/precise64"
+        agent2.vm.network "private_network", ip: "192.168.33.200" 
+        agent2.vm.provision "shell", inline: <<-SHELL
+            sudo apt-get -y install apache2 
+        SHELL
+
+        # VMware Fusion.
+        #agent2.vm.provider :vmware_fusion do |vmware_fusion|
+        #    vmware_fusion.gui = false
+        #    vmware_fusion.vmx["memsize"] = "1024"
+        #    vmware_fusion.vmx["numvcpus"] = "1"
+        #end
+ 
+        # VirtualBox.
+        agent2.vm.provider :virtualbox do |virtualbox|
+            virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        #    virtualbox.customize ["modifyvm", :id, "--memory", 1024]
+            virtualbox.customize ["modifyvm", :id, "--name", "agent2"]
+            virtualbox.customize ["modifyvm", :id, "--ioapic", "on"]
+        end
+ 
+        # Parallels.
+        #agent2.vm.provider :parallels do |parallels|
+        #    parallels.name = "agent2"
+        #    parallels.memory = "1024"
+        #    parallels.cpus = "1"
+        #end
+
+    end
+
+    # VM pour agent Windows
+    config.vm.define "agent3" do |agent3|
+        agent3.vm.box = "williamtsoi/windows_10"
+        agent3.vm.network "private_network", ip: "192.168.33.150" 
+
+        # VMware Fusion.
+        #agent3.vm.provider :vmware_fusion do |vmware_fusion|
+        #    vmware_fusion.gui = false
+        #    vmware_fusion.vmx["memsize"] = "1024"
+        #    vmware_fusion.vmx["numvcpus"] = "1"
+        #end
+ 
+        # VirtualBox.
+        agent3.vm.provider :virtualbox do |virtualbox|
+            virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        #    virtualbox.customize ["modifyvm", :id, "--memory", 1024]
+            virtualbox.customize ["modifyvm", :id, "--name", "agent3"]
+            virtualbox.customize ["modifyvm", :id, "--ioapic", "on"]
+        end
+ 
+        # Parallels.
+        #agent3.vm.provider :parallels do |parallels|
+        #    parallels.name = "agent3"
+        #    parallels.memory = "1024"
+        #    parallels.cpus = "1"
+        #end
+    end
+
+	config.vm.define "provisioner" do |provisioner|
+        provisioner.vm.box = "hashicorp/precise64"
+        provisioner.vm.network "private_network", ip: "192.168.33.10" 
+        provisioner.vm.provision "file", source: "../../ossec-ansible/", destination: "~/ossec-ansible"
+        provisioner.vm.provision "shell", inline: <<-SHELL
+        	sudo apt-get update && sudo apt-get upgrade
+        	sudo apt-get -y install git python-pip sshpass 
+        	sudo pip install xmltodict pywinrm markupsafe ansible
+        	cd ossec-ansible/provisioning && ansible-playbook -i hosts_vagrant playbook_vagrant.yml 
+        SHELL
+
+        # VMware Fusion.
+        #provisioner.vm.provider :vmware_fusion do |vmware_fusion|
+        #    vmware_fusion.gui = false
+        #    vmware_fusion.vmx["memsize"] = "1024"
+        #    vmware_fusion.vmx["numvcpus"] = "1"
+        #end
+ 
+        # VirtualBox.
+        provisioner.vm.provider :virtualbox do |virtualbox|
+            virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        #    virtualbox.customize ["modifyvm", :id, "--memory", 1024]
+            virtualbox.customize ["modifyvm", :id, "--name", "provisioner"]
+            virtualbox.customize ["modifyvm", :id, "--ioapic", "on"]
+        end
+ 
+        # Parallels.
+        #provisioner.vm.provider :parallels do |parallels|
+        #    parallels.name = "provisioner"
+        #    parallels.memory = "1024"
+        #    parallels.cpus = "1"
+        #end
+    end
+end
+

@@ -1,0 +1,11 @@
+---
+
+- name: Add Logstash repo (CentOS/RedHat)
+  copy: src=../files/logstash.repo dest=/etc/yum.repos.d/logstash.repo mode=0644
+   
+- name: Install Logstash
+  package: name=logstash update_cache=true state=present
+
+- name: Deploy logstash.conf on server host
+  template: src=../templates/logstash.conf.j2 dest=/etc/logstash/conf.d/logstash.conf
+  notify: restart logstash

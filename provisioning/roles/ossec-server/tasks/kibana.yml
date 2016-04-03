@@ -1,0 +1,11 @@
+---
+
+- name: Add Kibana repo (CentOS/RedHat)
+  copy: src=../files/kibana.repo dest=/etc/yum.repos.d/kibana.repo mode=0644
+
+- name: Install Kibana
+  package: name=kibana update_cache=true state=present
+
+- name: Deploy kibana.yml on server host
+  template: src=../templates/kibana.yml.j2 dest=/opt/kibana/config/kibana.yml
+  notify: restart kibana

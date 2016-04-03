@@ -1,0 +1,61 @@
+---
+
+- name: Add Ossec-Server Repo (Debian)
+  apt_repository: repo="deb http://ossec.wazuh.com/repos/apt/debian wheezy main" state=present
+  when: ansible_distribution == 'Debian'
+
+- name: Add Ossec-Server Repo (Ubuntu)
+  apt_repository: repo="deb http://ossec.wazuh.com/repos/apt/ubuntu precise main" state=present
+  when: ansible_distribution == 'Ubuntu'
+
+- set_fact: ossec_name=ossec
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- set_fact: ossec_name=ossec-hids
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+      
+- name: Download atomic script and execute it (CentOS/RedHat)
+  get_url: url=https://atomicorp.com/installers/atomic dest=/tmp/atomic.sh
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+- name: Check atomic file existing
+  stat: path=/tmp/atomic.sh
+  register: atomic_script
+
+- name: Execute atomic.sh if it exists
+  shell: expect -c 'spawn sh /tmp/atomic.sh; expect "yes]"; send "yes\n"; expect "yes]:"; send "yes\n"; interact'
+  when: atomic_script.stat.exists
+
+- name: Install ossec-server
+  yum: name={{item}} update_cache=true state=latest 
+  with_items:
+      - ossec-hids
+      - ossec-hids-server
+
+- name: Add Ossec at startup
+  shell: chkconfig ossec-hids on
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+- name: Deploy ossec.conf on server host
+  template: src=../templates/ossec.conf.j2 dest=/var/ossec/etc/ossec.conf backup=yes
+
+- name: Deploy local_rules.xml rule file
+  template: src=../templates/local_rules.xml.j2 dest=/var/ossec/rules/local_rules.xml backup=yes
+
+      # Add Wazuh rules (http://documentation.wazuh.com/en/latest/ossec_ruleset.html#wazuh-rules)
+- name: Create wazuh ruleset directory
+  file: path=/var/ossec/update/ruleset state=directory
+
+- name: Get ossec ruleset
+  get_url: url=https://raw.githubusercontent.com/wazuh/ossec-rules/master/ossec_ruleset.py dest=/var/ossec/update/ruleset/
+
+- name: Execute ossec ruleset script
+  shell: python /var/ossec/update/ruleset/ossec_ruleset.py -s
+
+- name: Copy client.keys file
+  copy: src=roles/ossec-server/files/client.keys dest=/var/ossec/etc/client.keys
+
+- name: enable client-syslog
+  shell: /var/ossec/bin/ossec-control enable client-syslog
+  notify: restart ossec-server
+

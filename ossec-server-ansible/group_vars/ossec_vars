@@ -1,9 +1,0 @@
----
-
-ossec_vars:
-    server_ip: 192.168.33.100
-
-    ssh_creds: 
-        ssh_user=vagrant
-        ssh_pass=vagrant
-

@@ -1,0 +1,35 @@
+---
+
+- name: Get AppData location
+  raw: cmd /c "echo %appdata%"
+  register: appdata_location
+
+- name: Copy ossec-agent for Windows platforms
+  win_copy: src=roles/ossec-windows-agent/files/ossec-agent-win32-2.8.3.exe dest={{ appdata_location.stdout[:-2] }}\ossec-agent-win32-2.8.3.exe
+  when: ansible_os_family == "Windows"
+
+- name: Check Ossec Agent presence on Windows
+  win_stat: path={{ appdata_location.stdout[:-2] }}\ossec-agent-win32-2.8.3.exe
+  register: win_agent
+  when: ansible_os_family == "Windows"
+
+- name: Install Ossec Agent on Windows
+  raw: '{{ appdata_location.stdout[:-2] }}\ossec-agent-win32-2.8.3.exe /S'
+  when: ansible_os_family == "Windows" and win_agent.stat.exists == true
+
+- set_fact: ossec_repo="C:\Program Files\ossec-agent"
+  when: ansible_architecture == "32-bit" or ansible_architecture == "x86"
+
+- set_fact: ossec_repo="C:\Program Files (x86)\ossec-agent"
+  when: ansible_architecture == "64-bit" or ansible_architecture == "x86_64"
+
+- name: Deploy ossec.conf on windows hosts
+  template: src=../templates/ossec.conf.j2 dest={{ ossec_repo }}\ossec.conf backup=yes
+
+- name: Copy client.keys file
+  win_copy: src=roles/ossec-windows-agent/files/keys/client_{{ inventory_hostname }}.keys dest={{ ossec_repo }}\client.keys
+
+- name: Start ossec-agent
+  raw: cmd /c "net start Ossecsvc" 
+  #raw: cmd /c powershell start-process -windowstyle hidden "C:\ossec-agent\ossec-agent.exe" -ArgumentList 'start'
+  #script: "roles/ossec-windows-agent/files/start_ossec_windows.ps1"

@@ -1,0 +1,87 @@
+<!-- OSSEC example config -->
+
+<ossec_config>
+  <client>
+    <server-ip>{{ossec_server_ip}}</server-ip>
+  </client>
+
+  <syscheck>
+    <frequency>300</frequency>
+    <alert_new_files>yes</alert_new_files>
+    <directories realtime="yes" check_all="yes">/etc,/usr/bin,/usr/sbin</directories>
+    <directories realtime="yes" check_all="yes">/bin,/sbin</directories>
+
+    <!-- Files/directories to ignore -->
+    <ignore>/etc/mtab</ignore>
+    <ignore>/etc/mnttab</ignore>
+    <ignore>/etc/hosts.deny</ignore>
+    <ignore>/etc/mail/statistics</ignore>
+    <ignore>/etc/random-seed</ignore>
+    <ignore>/etc/adjtime</ignore>
+    <ignore>/etc/httpd/logs</ignore>
+    <ignore>/etc/utmpx</ignore>
+    <ignore>/etc/wtmpx</ignore>
+    <ignore>/etc/cups/certs</ignore>
+  </syscheck>
+
+  <rootcheck>
+    <rootkit_files>/var/ossec/etc/shared/rootkit_files.txt</rootkit_files>
+    <rootkit_trojans>/var/ossec/etc/shared/rootkit_trojans.txt</rootkit_trojans>
+  </rootcheck>
+
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/messages</location>
+  </localfile>
+
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/secure</location>
+  </localfile>
+
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/maillog</location>
+  </localfile>
+
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/auth.log</location>
+  </localfile>  
+
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/mail.log</location>
+  </localfile>  
+
+  <localfile>
+    <log_format>apache</log_format>
+    <location>/var/log/httpd/error_log</location>
+  </localfile>
+
+  <localfile>
+    <log_format>apache</log_format>
+    <location>/var/log/httpd/access_log</location>
+  </localfile>
+
+  <localfile>
+    <log_format>apache</log_format>
+    <location>/var/log/apache2/access.log</location>
+  </localfile>
+
+  <localfile>
+    <log_format>apache</log_format>
+    <location>/var/log/apache2/error.log</location>
+  </localfile>
+
+  <localfile>
+    <log_format>full_command</log_format>
+    <command>netstat -tan |grep LISTEN |grep -v 127.0.0.1</command>
+  </localfile>
+
+  <localfile>
+    <log_format>full_command</log_format>
+    <command>lsblk</command>
+  </localfile>
+
+</ossec_config>

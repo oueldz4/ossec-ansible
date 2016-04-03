@@ -1,0 +1,213 @@
+[
+  {
+    "_id": "Dashboard-Global",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Dashboard Global",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"id\":\"Top-10-niveaux-des-alertes\",\"type\":\"visualization\",\"panelIndex\":2,\"size_x\":4,\"size_y\":3,\"col\":5,\"row\":1},{\"id\":\"global-search\",\"type\":\"search\",\"panelIndex\":4,\"size_x\":12,\"size_y\":3,\"col\":1,\"row\":4,\"columns\":[\"User\",\"Location\",\"Description\",\"Details\"],\"sort\":[\"@timestamp\",\"desc\"]},{\"id\":\"TOP-20-Vision-globale-du-parc\",\"type\":\"visualization\",\"panelIndex\":5,\"size_x\":4,\"size_y\":3,\"col\":1,\"row\":1},{\"id\":\"TOP-10-Les-règles-les-plus-rencontrées\",\"type\":\"visualization\",\"panelIndex\":6,\"size_x\":4,\"size_y\":3,\"col\":9,\"row\":1}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "Dashboard-des-accès",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Dashboard des accès",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"id\":\"Global-Search\",\"type\":\"search\",\"panelIndex\":4,\"size_x\":12,\"size_y\":3,\"col\":1,\"row\":4,\"columns\":[\"Location\",\"User\",\"Description\",\"Details\"],\"sort\":[\"@timestamp\",\"desc\"]},{\"id\":\"TOP-20-Différents-accès-machine\",\"type\":\"visualization\",\"panelIndex\":5,\"size_x\":5,\"size_y\":3,\"col\":1,\"row\":1},{\"id\":\"TOP-10-Tendance-des-accès\",\"type\":\"visualization\",\"panelIndex\":6,\"size_x\":7,\"size_y\":3,\"col\":6,\"row\":1}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{\"P-1\":{\"spy\":{\"mode\":{\"fill\":false,\"name\":null}}},\"P-2\":{\"spy\":{\"mode\":{\"fill\":false,\"name\":null}}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "Dashboard-comportements-suspicieux",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Dashboard comportements suspicieux",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"id\":\"TOP-20-Vision-globale-des-comportements-suspicieux\",\"type\":\"visualization\",\"panelIndex\":1,\"size_x\":5,\"size_y\":3,\"col\":1,\"row\":1},{\"id\":\"TOP-20-Tendance-des-comportements-suspicieux\",\"type\":\"visualization\",\"panelIndex\":2,\"size_x\":7,\"size_y\":3,\"col\":6,\"row\":1},{\"id\":\"Global-Search\",\"type\":\"search\",\"panelIndex\":3,\"size_x\":12,\"size_y\":2,\"col\":1,\"row\":4,\"columns\":[\"Location\",\"User\",\"Description\",\"Details\"],\"sort\":[\"@timestamp\",\"desc\"]}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "global-search",
+    "_type": "search",
+    "_source": {
+      "title": "global search",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "Location",
+        "Details",
+        "Description",
+        "Alert_Level",
+        "Src_IP",
+        "User"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "Global-Search",
+    "_type": "search",
+    "_source": {
+      "title": "Global Search",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "Location",
+        "User",
+        "Description",
+        "Details"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "TOP-10-Tendance-des-accès",
+    "_type": "visualization",
+    "_source": {
+      "title": "TOP 10 - Tendance des accès",
+      "visState": "{\"title\":\"Tendance des accès\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"Description.raw\",\"include\":{\"pattern\":\"(.*Login.*)|(.*Logon.*)|(.*Logoff.*)|(.*Logout.*)|(.*authentication.*)|(.*logged.*)\"},\"size\":10,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "TOP-20-Tendance-des-comportements-suspicieux",
+    "_type": "visualization",
+    "_source": {
+      "title": "TOP 20 - Tendance des comportements suspicieux",
+      "visState": "{\"title\":\"Tendance des comportements suspicieux - Top 20\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"Description.raw\",\"include\":{\"pattern\":\"(.*rootcheck.*)|(.*rootcheck.*)\"},\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "TOP-20-Différents-accès-machine",
+    "_type": "visualization",
+    "_source": {
+      "title": "TOP 20 - Différents accès machine",
+      "visState": "{\"title\":\"Différents accès machine\",\"type\":\"pie\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"isDonut\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"Description.raw\",\"exclude\":{\"pattern\":\"\"},\"include\":{\"pattern\":\"(.*Login.*)|(.*Logon.*)|(.*Logoff.*)|(.*Logout.*)|(.*authentication.*)|(.*logged.*)\"},\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "TOP-20-Vision-globale-des-comportements-suspicieux",
+    "_type": "visualization",
+    "_source": {
+      "title": "TOP 20 - Vision globale des comportements suspicieux",
+      "visState": "{\"title\":\"Vision globale des comportements suspicieux\",\"type\":\"pie\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"isDonut\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"Description.raw\",\"include\":{\"pattern\":\"(.*rootcheck.*)|(.*Rootcheck)\"},\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "TOP-10-Les-niveaux-des-alertes-les-plus-rencontrées",
+    "_type": "visualization",
+    "_source": {
+      "title": "TOP 10 - Les niveaux des alertes les plus rencontrées",
+      "visState": "{\"title\":\"Top 10 niveaux des alertes\",\"type\":\"pie\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"isDonut\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"Alert_Level.raw\",\"size\":10,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "TOP-10-Les-règles-les-plus-rencontrées",
+    "_type": "visualization",
+    "_source": {
+      "title": "TOP 10 - Les règles les plus rencontrées",
+      "visState": "{\"title\":\"Top 10 des règles\",\"type\":\"pie\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"isDonut\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"Rule.raw\",\"size\":10,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "TOP-20-Vision-globale-du-parc",
+    "_type": "visualization",
+    "_source": {
+      "title": "TOP 20 - Vision globale du parc",
+      "visState": "{\"title\":\"Vision globale  du parc\",\"type\":\"pie\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"isDonut\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"Description.raw\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "Top-10-niveaux-des-alertes",
+    "_type": "visualization",
+    "_source": {
+      "title": "TOP 10 - Les niveaux des alertes les plus rencontrées",
+      "visState": "{\n  \"title\": \"New Visualization\",\n  \"type\": \"pie\",\n  \"params\": {\n    \"shareYAxis\": true,\n    \"addTooltip\": true,\n    \"addLegend\": true,\n    \"isDonut\": false\n  },\n  \"aggs\": [\n    {\n      \"id\": \"1\",\n      \"type\": \"count\",\n      \"schema\": \"metric\",\n      \"params\": {}\n    },\n    {\n      \"id\": \"2\",\n      \"type\": \"terms\",\n      \"schema\": \"segment\",\n      \"params\": {\n        \"field\": \"Alert_Level.raw\",\n        \"size\": 10,\n        \"order\": \"desc\",\n        \"orderBy\": \"1\"\n      }\n    }\n  ],\n  \"listeners\": {}\n}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\n  \"index\": \"logstash-*\",\n  \"query\": {\n    \"query_string\": {\n      \"query\": \"*\",\n      \"analyze_wildcard\": true\n    }\n  },\n  \"filter\": []\n}"
+      }
+    }
+  }
+]

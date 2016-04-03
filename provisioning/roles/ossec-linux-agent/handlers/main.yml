@@ -1,0 +1,4 @@
+---
+
+- name: restart ossec-agent
+  service: name={{ossec_name}} state=restarted

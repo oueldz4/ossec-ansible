@@ -1,0 +1,6 @@
+---
+- name: Install dependencies
+  package: name={{item}} update_cache=yes state=latest
+  with_items:
+      - wget
+      - expect 

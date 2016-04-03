@@ -1,0 +1,15 @@
+---
+
+- name: Generate Linux agents keys 
+  shell: python -c "import hashlib; fd=open(\"roles/ossec-linux-agent/files/keys/client_{{ item.1 }}.keys\", \"w\"); fd.write(str(int(\"{{item.0}}\")+1)+\" agent_linux{{item.0}} any \"+str(hashlib.md5(\"agent_linux{{item.0}}\").hexdigest())+str(hashlib.md5(\"agent_linux\").hexdigest())+\"\n\")"
+  with_indexed_items: groups['ossec_linux_agents']
+
+- set_fact: i={{ item }} 
+  with_sequence: count={{ groups['ossec_linux_agents']|length }}
+
+- name: Generate Windows agents keys 
+  shell: python -c "import hashlib; fd=open(\"roles/ossec-windows-agent/files/keys/client_{{item.1}}.keys\", \"w\"); fd.write(str(int(\"{{item.0}}\")+int({{i}})+1)+\" agent_windows{{item.0}} any \"+str(hashlib.md5(\"agent_windows{{item.0}}\").hexdigest())+str(hashlib.md5(\"agent_windows\").hexdigest())+\"\n\")"
+  with_indexed_items: groups['ossec_windows_agents']
+
+- name: Generate Server Linux/Windows agents keys
+  shell: cat roles/ossec-linux-agent/files/keys/*.keys > roles/ossec-server/files/client.keys && cat roles/ossec-windows-agent/files/keys/*.keys >> roles/ossec-server/files/client.keys

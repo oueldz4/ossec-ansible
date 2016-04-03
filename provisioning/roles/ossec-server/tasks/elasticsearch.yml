@@ -1,0 +1,24 @@
+---
+
+- name: Add Elasticsearch GPG key (Debian/Ubuntu)
+  apt_key: url=https://packages.elastic.co/GPG-KEY-elasticsearch state=present
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Add Elasticsearch repository (Debian/Ubuntu)      
+  apt_repository: repo="deb http://packages.elastic.co/elasticsearch/2.x/debian stable main" state=present
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Add Elasticsearch repo (CentOS/RedHat)
+  rpm_key: key=https://packages.elastic.co/GPG-KEY-elasticsearch state=present
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+- name: Copy repo file      
+  copy: src=../files/elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch.repo mode=0644
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat' 
+
+- name: Install Elasticsearch
+  package: name=elasticsearch update_cache=true state=present
+
+- name: Deploy elasticsearch.yml on server host
+  template: src=../templates/elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml
+  notify: restart elasticsearch
